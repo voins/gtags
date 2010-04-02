@@ -503,7 +503,12 @@
     ; Use always ctags-x format.
     (setq option "-x")
     (if (char-equal flag-char ?C)
-        (setq context (concat "--from-here=" (number-to-string (gtags-current-lineno)) ":" buffer-file-name))
+        (setq context (concat "--from-here=" (number-to-string (gtags-current-lineno)) ":"
+                              (if (and (fboundp 'tramp-tramp-file-p)
+                                       (tramp-tramp-file-p buffer-file-name))
+                                  (with-parsed-tramp-file-name buffer-file-name tr
+                                    tr-localname)
+                                buffer-file-name)))
         (setq option (concat option flag)))
     (cond
      ((char-equal flag-char ?C)
