@@ -506,7 +506,7 @@
         (setq context (concat "--from-here=" (number-to-string (gtags-current-lineno)) ":"
                               (if (and (fboundp 'tramp-tramp-file-p)
                                        (tramp-tramp-file-p buffer-file-name))
-                                  (with-parsed-tramp-file-name buffer-file-name tr
+                                  (with-parsed-tramp-file-name (file-truename buffer-file-name) tr
                                     tr-localname)
                                 buffer-file-name)))
         (setq option (concat option flag)))
