@@ -281,7 +281,12 @@
       (if (= n 0)
         (setq path (file-name-as-directory (buffer-substring (point-min)(1- (point-max))))))
       (kill-buffer buffer))
-    path))
+    (if (and (fboundp 'tramp-tramp-file-p)
+             (tramp-tramp-file-p default-directory))
+        (with-parsed-tramp-file-name default-directory tr
+          (concat (substring default-directory 0 (* -1 (length tr-localname)))
+                  path))
+      path)))
 
 ;;
 ;; interactive command
