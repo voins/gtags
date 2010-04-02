@@ -242,7 +242,7 @@
         (prev-buffer (current-buffer)))
     ; build completion list
     (set-buffer (generate-new-buffer "*Completions*"))
-    (call-process "global" nil t nil option string)
+    (process-file "global" nil t nil option string)
     (goto-char (point-min))
     ;
     ; The specification of the completion for files is different from that for symbols.
@@ -277,7 +277,7 @@
     (save-excursion
       (setq buffer (generate-new-buffer (generate-new-buffer-name "*rootdir*")))
       (set-buffer buffer)
-      (setq n (call-process "global" nil t nil "-pr"))
+      (setq n (process-file "global" nil t nil "-pr"))
       (if (= n 0)
         (setq path (file-name-as-directory (buffer-substring (point-min)(1- (point-max))))))
       (kill-buffer buffer))
@@ -402,7 +402,7 @@
 (defun gtags-display-browser ()
   "Display current screen on hypertext browser."
   (interactive)
-  (call-process "gozilla"  nil nil nil (concat "+" (number-to-string (gtags-current-lineno))) buffer-file-name))
+  (process-file "gozilla"  nil nil nil (concat "+" (number-to-string (gtags-current-lineno))) buffer-file-name))
 
 ; Private event-point
 ; (If there is no event-point then we use this version.
@@ -559,8 +559,8 @@
         (if rootdir (cd rootdir)))))
     (message "Searching %s ..." tagname)
     (if (not (= 0 (if (equal flag "C")
-                      (call-process "global" nil t nil option context tagname)
-                      (call-process "global" nil t nil option tagname))))
+                      (process-file "global" nil t nil option context tagname)
+                      (process-file "global" nil t nil option tagname))))
 	(progn (message (buffer-substring (point-min)(1- (point-max))))
                (gtags-pop-context))
       (goto-char (point-min))
